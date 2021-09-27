@@ -10,6 +10,9 @@ ENV INPUT='http://policy.cookalliance.org/'
 ENV CONNECTION_TIMEOUT=60000
 ENV CHROME_PATH=/usr/bin/google-chrome
 
+# Install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+
 # Configuration for GS4JS
 ENV GS4JS_HOME=/usr/lib/x86_64-linux-gnu
 
@@ -46,7 +49,7 @@ RUN apt-get update && apt-get install -y wget --no-install-recommends
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
 		&& sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
 		&& apt-get update \
-		&& apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst ttf-freefont \
+		&& apt-get install -y -f google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst ttf-freefont \
 			--no-install-recommends \
 		&& rm -rf /var/lib/apt/lists/* \
 		&& apt-get purge --auto-remove -y curl \
