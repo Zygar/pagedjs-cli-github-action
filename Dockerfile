@@ -89,4 +89,4 @@ EXPOSE $PORT
 
 ENTRYPOINT ["dumb-init", "--"]
 
-CMD ["./bin/paged -i ${INPUT}"]
+CMD ["./bin/paged"]

@@ -1,0 +1,13 @@
+# action.yml
+name: 'PagedJS - CLI'
+description: 'Takes an arbitrary URL and returns a paginated PDF as a result'
+inputs:
+  target_url:  # id of input
+    description: 'Target URL'
+    required: true
+    default: 'http://policy.cookalliance.org/model-legislation'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ./bin/paged -i ${{ inputs.target_url }}
