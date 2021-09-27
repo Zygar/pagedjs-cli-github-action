@@ -1,4 +1,4 @@
-FROM node:12-stretch
+FROM node:14-bullseye
 
 # Application parameters and variables
 ENV NODE_ENV=development
