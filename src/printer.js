@@ -10,7 +10,7 @@ let dir = process.cwd();
 // Find top most pagedjs
 let pagedjsLocation = require.resolve("pagedjs/dist/paged.polyfill.js");
 let paths = pagedjsLocation.split("node_modules");
-let scriptPath = paths[0] + "node_modules" + paths[paths.length-1];
+let scriptPath = paths[0] + "node_modules" + paths[paths.length - 1];
 
 const PostProcesser = require("./postprocesser.js");
 
@@ -36,7 +36,7 @@ class Printer extends EventEmitter {
   async setup() {
     let puppeteerOptions = {
       headless: this.headless,
-      args: ["--disable-dev-shm-usage", "--export-tagged-pdf"],
+      args: ["--disable-dev-shm-usage", "--no-sandbox", "--disable-setuid-sandbox", "--export-tagged-pdf"],
       ignoreHTTPSErrors: this.ignoreHTTPSErrors
     };
 
@@ -60,7 +60,7 @@ class Printer extends EventEmitter {
 
   async render(input) {
     let resolver;
-    let rendered = new Promise(function(resolve, reject) {
+    let rendered = new Promise(function (resolve, reject) {
       resolver = resolve;
     });
 
@@ -179,7 +179,7 @@ class Printer extends EventEmitter {
 
     await page.exposeFunction("onRendered", (msg, width, height, orientation) => {
       this.emit("rendered", msg, width, height, orientation);
-      resolver({msg, width, height, orientation});
+      resolver({ msg, width, height, orientation });
     });
 
     await page.evaluate(async () => {
@@ -249,7 +249,7 @@ class Printer extends EventEmitter {
       }
       tagsToProcess.reverse();
 
-      const root = {children: [], depth: -1};
+      const root = { children: [], depth: -1 };
       let currentOutlineNode = root;
 
       while (tagsToProcess.length > 0) {
@@ -289,7 +289,7 @@ class Printer extends EventEmitter {
     }, tags);
   }
 
-  async pdf(input, options={}) {
+  async pdf(input, options = {}) {
     let page = await this.render(input)
       .catch((e) => {
         throw e;
