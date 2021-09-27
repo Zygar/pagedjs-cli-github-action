@@ -4,6 +4,7 @@ FROM node:12-stretch
 ENV NODE_ENV=development
 ENV PORT=9090
 ENV DIRECTORY /home/node/pagedjs-cli
+ENV INPUT='http://policy.cookalliance.org/'
 
 # Configuration for Chrome
 ENV CONNECTION_TIMEOUT=60000
@@ -66,26 +67,26 @@ RUN mkdir -p $DIRECTORY
 
 # Add user so we don't need --no-sandbox.
 # RUN groupadd -r node && useradd -r -g node -G audio,video node \
-RUN adduser node audio \
-		&& adduser node video \
-		&& mkdir -p /home/node/Downloads \
-		&& chown -R node:node /home/node \
-		&& chown -R node:node /usr/lib \
-		&& chown -R node:node $DIRECTORY
+# RUN adduser node audio \
+# 		&& adduser node video \
+# 		&& mkdir -p /home/node/Downloads \
+# 		&& chown -R node:node /home/node \
+# 		&& chown -R node:node /usr/lib \
+# 		&& chown -R node:node $DIRECTORY
 
 # Run everything after as non-privileged user.
-USER node
+# USER node
 
 WORKDIR $DIRECTORY
 
-COPY --chown=node:node package.json $DIRECTORY
+COPY package.json $DIRECTORY
 RUN npm install
 RUN npm install ghostscript4js
 
-COPY --chown=node:node . $DIRECTORY
+COPY . $DIRECTORY
 
 EXPOSE $PORT
 
 ENTRYPOINT ["dumb-init", "--"]
 
-CMD ["./bin/paged"]
+CMD ["./bin/paged -i ${INPUT}"]
