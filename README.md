@@ -2,6 +2,8 @@
 
 Render Html to PDFs using [Pagedjs](https://gitlab.pagedmedia.org/polyfills/pagedjs) and [Puppeteer](https://github.com/GoogleChrome/puppeteer).
 
+This is a Github action based on the [PagedJS CLI](https://www.npmjs.com/package/pagedjs-cli). There are less configuration options and a couple of minor changes to prevent timeouts when running in containers. 
+
 ## Installation
 
 ```
