@@ -96,35 +96,37 @@ class Printer extends EventEmitter {
       html = input.html;
     }
 
-    await page.setRequestInterception(true);
+    // await page.setRequestInterception(true);
+    // Let's not use this; it creates hangs https://github.com/puppeteer/puppeteer/issues/3118
+    // page.on('request', (request) => {
 
-    page.on('request', (request) => {
-      let uri = new URL(request.url());
-      let { host, protocol, pathname } = uri;
-      let local = protocol === "file:"
+    //   let uri = new URL(request.url());
+    //   let { host, protocol, pathname } = uri;
+    //   console.log("Making request", uri.pathname)
+    //   let local = protocol === "file:"
 
-      if (local && this.withinAllowedPath(pathname) === false) {
-        request.abort();
-        return;
-      }
+    //   if (local && this.withinAllowedPath(pathname) === false) {
+    //     request.abort();
+    //     return;
+    //   }
 
-      if (local && !this.allowLocal) {
-        request.abort();
-        return;
-      }
+    //   if (local && !this.allowLocal) {
+    //     request.abort();
+    //     return;
+    //   }
 
-      if (host && this.isAllowedDomain(host) === false) {
-        request.abort();
-        return;
-      }
+    //   if (host && this.isAllowedDomain(host) === false) {
+    //     request.abort();
+    //     return;
+    //   }
 
-      if (host && !this.allowRemote) {
-        request.abort();
-        return;
-      }
+    //   if (host && !this.allowRemote) {
+    //     request.abort();
+    //     return;
+    //   }
 
-      request.continue();
-    });
+    //   request.continue();
+    // })
 
     if (html) {
       await page.setContent(html);
@@ -161,16 +163,16 @@ class Printer extends EventEmitter {
       });
     }
 
-    // await page.exposeFunction("PuppeteerLogger", (msg) => {
-    //   console.log(msg);
-    // });
+    await page.exposeFunction("PuppeteerLogger", (msg) => {
+      console.log(msg);
+    });
 
     await page.exposeFunction("onSize", (size) => {
       this.emit("size", size);
     });
 
     await page.exposeFunction("onPage", (page) => {
-      // console.log("page", page.position + 1);
+      console.log("page", page.position + 1);
 
       this.pages.push(page);
 
