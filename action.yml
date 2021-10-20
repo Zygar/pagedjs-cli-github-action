@@ -8,6 +8,6 @@ inputs:
     default: 'http://policy.cookalliance.org/model-legislation'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'docker://andyayrey/pagedjs-cli:latest'
   args:
     - ./bin/paged -i "${{ inputs.target_url }}" -o /github/workspace
