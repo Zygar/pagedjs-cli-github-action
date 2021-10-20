@@ -10,4 +10,4 @@ runs:
   using: 'docker'
   image: 'docker://andyayrey/pagedjs-cli:latest'
   args:
-    - ./bin/paged -i "${{ inputs.target_url }}" -o /github/workspace
+    - ./bin/paged -i "${{ inputs.target_url }}" 
