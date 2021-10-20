@@ -14,4 +14,4 @@ runs:
   image: 'docker://andyayrey/pagedjs-cli:latest'
   args:
     - "-i ${{ inputs.target_url }}"
-    - "--additional-script ${{ inputs.additional_script }}"
+    - "--additional-script '${{ inputs.additional_script }}'"
