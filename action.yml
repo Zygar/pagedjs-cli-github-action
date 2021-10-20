@@ -6,8 +6,12 @@ inputs:
     description: 'Target URL'
     required: true
     default: 'https://policy.cookalliance.org/introduction/'
+  additional_script:
+    description: 'PagedJS handlers'
+    required: false
 runs:
   using: 'docker'
   image: 'docker://andyayrey/pagedjs-cli:latest'
   args:
     - "-i ${{ inputs.target_url }}"
+    - "--additional-script ${{ inputs.additional_script }}"

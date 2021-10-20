@@ -181,6 +181,7 @@ if (typeof input === "string") {
     fs.writeFile(output, file, (err) => {
       if (err) throw err;
       spinner.succeed("Saved to " + output);
+      console.log(dir);
       process.exit(0);
     });
   }
