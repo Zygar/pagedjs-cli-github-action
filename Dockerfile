@@ -1,27 +1,26 @@
-FROM node:14-bullseye
+FROM andyayrey/puppeteer-base:latest
 
 # Application parameters and variables
 ENV NODE_ENV=development
 ENV PORT=9090
 ENV DIRECTORY /home/node/pagedjs-cli
-ENV INPUT='http://policy.cookalliance.org/'
 
 # Configuration for Chrome
 ENV CONNECTION_TIMEOUT=60000
-ENV CHROME_PATH=/usr/bin/google-chrome
+ENV CHROME_PATH=/usr/bin/google-chrome-stable
 
 # Install dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+# RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 
 # Configuration for GS4JS
 ENV GS4JS_HOME=/usr/lib/x86_64-linux-gnu
 
 # Install ghostscript
-RUN apt-get update && \
-		apt-get install -y build-essential make gcc g++ && \
-		apt-get -y install ghostscript && apt-get clean && \
-		apt-get install -y libgs-dev && \
-		rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && \
+# 		apt-get install -y build-essential make gcc g++ && \
+# 		apt-get -y install ghostscript && apt-get clean && \
+# 		apt-get install -y libgs-dev && \
+# 		rm -rf /var/lib/apt/lists/*
 
 # See https://github.com/GoogleChrome/puppeteer/blob/master/.ci/node12/Dockerfile.linux
 # RUN apt-get update && \
@@ -36,34 +35,34 @@ RUN apt-get update && \
 COPY docker-font.conf /etc/fonts/local.conf
 ENV FREETYPE_PROPERTIES="truetype:interpreter-version=35"
 RUN apt-get update \
-		&& sh -c 'echo "deb http://http.us.debian.org/debian stable main contrib non-free" >> /etc/apt/sources.list' \
-		&& apt-get update \
-		&& apt-get install -y ttf-mscorefonts-installer \
-			--no-install-recommends \
-		&& rm -rf /var/lib/apt/lists/*
+	&& sh -c 'echo "deb http://http.us.debian.org/debian stable main contrib non-free" >> /etc/apt/sources.list' \
+	&& apt-get update \
+	&& apt-get install -y ttf-mscorefonts-installer \
+	--no-install-recommends \
+	&& rm -rf /var/lib/apt/lists/*
 
 # Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
 # Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer
 # installs, work.
-RUN apt-get update && apt-get install -y wget --no-install-recommends 
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-		&& sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
-		&& apt-get update \
-		&& apt-get install -y -f google-chrome-stable \
-			--no-install-recommends \
-		&& rm -rf /var/lib/apt/lists/* \
-		&& apt-get purge --auto-remove -y curl \
-		&& rm -rf /src/*.deb
+# RUN apt-get update && apt-get install -y wget --no-install-recommends 
+# RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+# 		&& sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+# 		&& apt-get update \
+# 		&& apt-get install -y -f google-chrome-stable \
+# 			--no-install-recommends \
+# 		&& rm -rf /var/lib/apt/lists/* \
+# 		&& apt-get purge --auto-remove -y curl \
+# 		&& rm -rf /src/*.deb
 
 # helps prevent zombie chrome processes.
-ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
-RUN chmod +x /usr/local/bin/dumb-init
+# ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
+# RUN chmod +x /usr/local/bin/dumb-init
 
 RUN apt-get update && \
-		apt-get install -y vim && \
-		rm -rf /var/lib/apt/lists/*
+	apt-get install -y vim && \
+	rm -rf /var/lib/apt/lists/*
 
-RUN npm install npm@latest -g
+# RUN npm install npm@latest -g
 RUN npm install -g node-gyp
 
 RUN mkdir -p $DIRECTORY
@@ -84,12 +83,13 @@ WORKDIR $DIRECTORY
 
 COPY package.json $DIRECTORY
 RUN npm install
+RUN apt-get update && apt-get install -y python3
 RUN npm install ghostscript4js
 
 COPY . $DIRECTORY
 
 EXPOSE $PORT
 
-ENTRYPOINT ["dumb-init", "--"]
+# ENTRYPOINT ["dumb-init", "--"]
 
-CMD ["./bin/paged"]
+# CMD ["./bin/paged"]
