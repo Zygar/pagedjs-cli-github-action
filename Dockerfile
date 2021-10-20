@@ -92,4 +92,5 @@ EXPOSE $PORT
 
 # ENTRYPOINT ["dumb-init", "--"]
 
+ENTRYPOINT ["/home/node/pagedjs-cli/bin/paged"]
 # CMD ["./bin/paged"]
