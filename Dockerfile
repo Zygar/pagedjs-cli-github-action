@@ -92,5 +92,5 @@ EXPOSE $PORT
 
 # ENTRYPOINT ["dumb-init", "--"]
 
-ENTRYPOINT ["/home/node/pagedjs-cli/bin/paged"]
+ENTRYPOINT ["/home/node/pagedjs-cli/bin/entrypoint.sh"]
 # CMD ["-i 'https://policy.cookalliance.org/model-legislation/'", "-o test.pdf"]
