@@ -10,4 +10,4 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ./bin/paged -i "${{ inputs.target_url }}"
+    - ./bin/paged -i "${{ inputs.target_url }}" -o /github/workspace
