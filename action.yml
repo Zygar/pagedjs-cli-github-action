@@ -5,9 +5,9 @@ inputs:
   target_url:  # id of input
     description: 'Target URL'
     required: true
-    default: 'http://policy.cookalliance.org/model-legislation'
+    default: 'https://policy.cookalliance.org/introduction/'
 runs:
   using: 'docker'
   image: 'docker://andyayrey/pagedjs-cli:latest'
   args:
-    - -i "${{ inputs.target_url }}" 
+    - "-i ${{ inputs.target_url }}"
